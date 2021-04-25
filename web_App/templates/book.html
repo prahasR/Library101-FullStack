@@ -1,0 +1,247 @@
+{% extends "layout.html" %}
+{% block content %}
+<form method="POST">
+  <div>
+  {{ form1.category }}</div>
+  <div>{{form1.input}}</div>
+  <input type="submit">
+
+  </form>
+  <article class="media content-section">
+
+    <div id="media-body">
+  <!--<div class="content-section">-->
+    <div class="media">
+      <img class="rounded-circle account-img" src="{{image_file}}">
+      <div id="media-body">
+        <h2 class="account-heading">{{ book.title }}</h2>
+        {% if book.genre %}<h4 class="account-heading">{{book.genre}}</h4>{% endif %}
+        <p class="text-secondary">{{ book.rating }} Stars</p>
+        <p class="text-secondary">{{ book.availability }} Books in Stocks</p>
+        <form action="{{url_for('book_reg', book_id=book.id)}}" >
+          <input type="hidden" name="_method" value="Issue">
+          <input type="submit" value="Issue" class="btn btn-success">
+        </form>
+        <button type="button" class="btn btn-success btn-sm m-1" data-toggle="modal" data-target="#postModal">Post</button></a>
+       
+      </div>
+      <article class="media content-section">
+        <div id="media-body">
+        <div class="article-metadata">
+          <div>
+            Publisher: <a class="mr-2" href="{{url_for('publisher',publisher_name=book.publisher)}}">{{ book.publisher }}</a>
+          </div>
+          <div><h5>Writer:<a class="article-title" href="{{url_for('author', author_name=book.writer)}}">{{ book.writer }}</a></h5></div>
+          </div>     
+          <p class="article-content">{{ book.summary }}</p>
+        </div>
+      </article>
+    
+      </div>
+    </div>
+   
+    </article>
+            <h4>Ratings and Revies</h4>
+            {% for post in posts %}
+            
+            <article class="media content-section">
+              <div id="media-body">
+            <div class="article-metadata">
+                <div><h5 >By: <a class="mr-2"> {{ post.username }}</a></h5></div>
+                <div><h5 ><a class="mr-2"> {{ post.rating }} Star</a></h5></div>
+              
+            </div>
+            <div class="body-author">
+            <h6 class="article-title">Description: {{ post.description }}</h6>
+            <h6>content:<a class="article-title" >{{ post.content }}</a></h6></div>
+            <p class="article-content">...</p>
+            
+          </article>
+            {% endfor %}
+            <article class="media content-section">
+
+              <div id="media-body">
+            {% for bok in same_author %}
+            <div class="content-section">
+            <article class="media content-section">
+              <div id="media-body">
+                <div class="article-metadata">
+              <img class="rounded-circle account-img" src="{{url_for('static', filename='book_pics/' + bok.img_file)}}">
+            <div class="article-metadata">
+                <div><h5 > <a class="mr-2"> {{ bok.title }}</a></h5></div>
+                {% if bok.genre %}<div><h5 ><a class="mr-2"> {{ bok.genre }} </a></h5></div>{% endif %}
+              
+            </div>
+            <div class="body-author">
+            <h6 class="article-title">{{bok.availability}} books in stocks</h6>
+            <h6><a class="article-title" >{{ bok.rating }} Stars</a></h6></div>
+           </div>
+            </div>
+          </article>
+          </div>
+            {% endfor %}
+          
+          </div>
+          </article>
+
+          <!--<form action="{{url_for('book_reg', book_id=book.id)}}" >
+            <input type="hidden" name="_method" value="Issue">
+            <input type="submit" value="Issue" class="btn btn-success">
+          </form>
+          <button type="button" class="btn btn-success btn-sm m-1" data-toggle="modal" data-target="#postModal">Post</button></a>
+          !-- Modal1_post -->
+          <div class="modal fade" id="postModal" tabindex="-1" role="dialog" aria-labelledby="postModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="postModalLabel">Post Experience</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  {% if current_user.is_authenticated %}
+                  {% if already_post==False %}
+                  <form method="POST" action="">
+                    {{ form.hidden_tag() }}
+                    <fieldset class="form-group">
+                      <div class="form-group">
+                        {{ form.rating.label(class="form-control-label") }}
+    
+                        {% if form.rating.errors %}
+                            {{ form.rating(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.rating.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.rating(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                        <div class="form-group">
+                            {{ form.description.label(class="form-control-label") }}
+        
+                            {% if form.description.errors %}
+                                {{ form.description(class="form-control form-control-lg is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.description.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form.description(class="form-control form-control-lg") }}
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            {{ form.content.label(class="form-control-label") }}
+                            {% if form.content.errors %}
+                                {{ form.content(class="form-control form-control-lg is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.content.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form.content(class="form-control form-control-lg") }}
+                            {% endif %}
+                              </div>
+                    </fieldset>
+                    <div class="form-group">
+                        {{ form.submit(class="btn btn-outline-info") }}
+                    </div>
+                </form>
+                {% else %}
+                You already had posted for this book
+                {% endif %}
+                {% else %}
+                You Need To Login First
+                {% endif %}  
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <!--<form action="#" method="POST">
+                    <input class="btn btn-success" type="submit" value="Post">
+                  </form>-->
+             
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!--Modal2_issue-->
+          <!--<div class="modal fade" id="issueModal" tabindex="-1" role="dialog" aria-labelledby="issueModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="issueModalLabel">Issue Book {{book.title}}</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  {% if current_user.is_authenticated %}
+                  <form method="POST" action="">
+                    {{ form.hidden_tag() }}
+                    <fieldset class="form-group">
+                      <div class="form-group">
+                        {{ form.rating.label(class="form-control-label") }}
+    
+                        {% if form.rating.errors %}
+                            {{ form.rating(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.rating.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.rating(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                        <div class="form-group">
+                            {{ form.description.label(class="form-control-label") }}
+        
+                            {% if form.description.errors %}
+                                {{ form.description(class="form-control form-control-lg is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.description.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form.description(class="form-control form-control-lg") }}
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            {{ form.content.label(class="form-control-label") }}
+                            {% if form.content.errors %}
+                                {{ form.content(class="form-control form-control-lg is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.content.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form.content(class="form-control form-control-lg") }}
+                            {% endif %}
+                              </div>
+                    </fieldset>
+                    <div class="form-group">
+                        {{ form.submit(class="btn btn-outline-info") }}
+                    </div>
+                </form>
+                {% else %}
+                You Need To Login First
+                {% endif %}  
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <--<form action="#" method="POST">
+                    <input class="btn btn-success" type="submit" value="Post">
+                  </form>--!!!>
+             
+                </div>
+              </div>
+            </div>
+          </div>-->
+{% endblock content %}

@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% block content %}
+  <h1>Dashboard </h1>
+  <a class="btn btn-success" href="{{url_for('add_book')}}"> Add Books</a>
+  <hr>
+  <table class="table table-striped">
+    <tr>
+      <th>ID</th>
+      <th>Book Title</th>
+      <th>Author</th>
+      <th>Publisher</th>
+      <th>Availablity</th>
+      <th></th>
+      <th></th>
+    </tr>
+    {% for book in books %}
+      <tr>
+        <td>{{book.id}}</td>
+        <td>{{book.title}}</td>
+        <td>{{book.writer}}</td>
+        <td>{{book.publisher}}</td>
+        <td>{{book.availability}}</td>
+        <td><a href="{{ url_for('edit_book', book_id=book.id)}}" class="btn btn-default pull-right">Edit</a></td>
+        <td>
+          <form action="{{url_for('delete_book', book_id=book.id)}}" method="post">
+            <input type="hidden" name="_method" value="DELETE">
+            <input type="submit" value="Delete" class="btn btn-danger">
+          </form>
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
+{% endblock %}

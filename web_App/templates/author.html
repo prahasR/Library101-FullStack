@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1>Books By {{name}} </h1>
+    {% for book in book_by_author %}
+        <article class="media content-section">
+
+          <div id="media-body">
+            <div class="article-metadata">
+                <div><h3>Book Name:
+                    <a class="mr-2" href="{{url_for('book_page',book_id=book.id)}}">{{ book.title }} </a></h3></div>
+                <div>
+                   Publisher: <a class="text-muted">{{ book.availability }}</a>
+                </div>
+              
+            </div>
+            <div class="body-author">
+            <!--<h5><a class="article-title" href="{{url_for('author', author_name=book.writer)}}">{{ book.writer }}</a></h5></div>-->
+            <h4>Publisher:<a class="article-title" href="{{url_for('publisher',publisher_name=book.publisher)}}"> {{ book.publisher }}</a></h4>
+            <p class="article-content">{{ book.summary }}</p>
+          </div>
+        </article>
+    {% endfor %}
+  
+{% endblock content %}

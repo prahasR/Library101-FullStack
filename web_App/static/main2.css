@@ -1,0 +1,195 @@
+body{
+    width: 100vw;
+    height:100vh;
+    margin-left: 0px;
+    margin-top: 0px;
+    overflow-x: hidden;
+    background: url("https://images.pexels.com/photos/1072179/pexels-photo-1072179.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940") no-repeat fixed center;
+}
+.bod-card{
+    margin-top: 100px;
+    width: 75vw;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    align-items: center;
+    justify-content: center;
+
+    
+}
+.temp-body{
+    display: flex;
+
+}
+.arivals{
+    
+    margin-top: 100px;
+    width: 22vw;
+    height:120vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr ;
+    justify-content: center;
+    text-align: center;
+   
+    border-style: dashed;
+    border-color: ivory;
+    color:ivory;
+    background: url("https://images.pexels.com/photos/1072179/pexels-photo-1072179.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940") no-repeat fixed center;
+}
+
+.header {
+    width: 100%;
+    height: 70px;
+    display: block;
+    background: url("https://images.pexels.com/photos/461940/pexels-photo-461940.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940") no-repeat fixed center;
+    text-align: right;
+     position: fixed;
+     z-index: 100;
+  }
+.header .nav-item{
+    width: 150px;
+    height: 100%;
+    vertical-align: middle;
+    font-size: 18px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    display: inline-block;
+    color: #ffffff;
+    cursor: pointer;
+   text-align: center;
+   
+}
+.header .nav-item a{
+    text-decoration: none ;
+    color: whitesmoke;
+
+}
+
+.header .nav-item:hover{
+    background-color: #273b1b;
+}
+
+.arivals .card {
+  display: grid;
+  margin-top: 15px;
+  margin-left: 15px;
+  margin-right: 15px;
+  margin-bottom: 15px;
+  height: 220px;
+  width: 120px;
+  grid-template-columns: 120px;
+  grid-template-rows: 90px 90px 40px;
+  grid-template-areas: "image" "text" "stats";
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  border-radius: 18px;
+  background: white;
+  box-shadow: 5px 5px 15px rgba(0,0,0,0.9);
+  text-align: center;
+  cursor: pointer;
+}
+.bod-card .card {
+    display: grid;
+    
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 30px;
+    height: 320px;
+    width: 200px;
+    grid-template-columns: 200px;
+    grid-template-rows: 120px 150px 50px;
+    grid-template-areas: "image" "text" "stats";
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    border-radius: 18px;
+    background: white;
+    box-shadow: 5px 5px 15px rgba(0,0,0,0.9);
+    text-align: center;
+    cursor: pointer;
+  }
+  
+ .card-image {
+    grid-area: image;
+    background: var(--background-url);
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    background-size: cover;
+  }
+  .card-text {
+    grid-area: text;
+  }
+  .card-text h2 a{
+      color: black;
+    font-size: 20px;
+    margin-top: 0px;
+  }
+  .card-text p{
+      display: block;
+      color: grey;
+      font-size: 10px;
+      font-weight: 300;
+      word-wrap: break-word;
+      text-overflow:ellipsis;
+        overflow: hidden;
+        max-height: 3rem;
+        line-height: 1rem;
+  }
+  .card-text a{
+    color: gray;
+    font-size: 15px;
+    font-weight: 300;
+    text-decoration: none;
+}
+
+.card-stats {
+    grid-area: stats;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    border-bottom-right-radius: 15px;
+    border-bottom-left-radius: 15px;
+    background: rgb(255,7,110) ;
+  }
+  .card-stats .stat{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+     
+      color: white;
+  }
+  .card-stats .type{
+      font-size: 11px;
+      font-weight: 300;
+      text-transform: uppercase;
+  }
+  .card-stats .value{
+    font-size: 22px;
+    font-weight: 500;
+}
+
+
+  .card:hover {
+      transform: scale(1.02);
+      box-shadow: 5px 5px 15px rgba(0,0,0,0.6);
+      z-index: 10;
+  }
+
+  .site-header .navbar-nav .nav-link {
+    color: #ff1a09cc;
+  }
+  
+  .site-header .navbar-nav .nav-link:hover {
+    color: #1013db;
+  }
+  
+  .site-header .navbar-nav .nav-link.active {
+    font-weight: 500;
+  }
+    .bg-steel {
+    background-color: #352a96;
+  }
+  footer{
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    color: white;
+    background-color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }

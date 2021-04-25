@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main2.css') }}">
+
+  {% if title %}
+      <title>Library101 - {{ title }}</title>
+  {% else %}
+      <title>Library101</title>
+  {% endif %}
+</head>
+<body>
+  <div class="header">
+    <!--<form method="POST">
+      {{ form.category }}
+      {{form.input_}}
+      <input type="text" placeholder="Search.." method="POST">{{ form.input }}</input>
+      <input type="submit">
+    
+      </form>-->
+    {% if current_user.is_authenticated %}
+    <div class="nav-item"><a  href="{{ url_for('logout') }}">Logout</a></div>
+    <div class="nav-item"><a  href="{{ url_for('account') }}">Account</a></div>
+      {% if current_user.token  %}
+      <div class="nav-item"><a  href="{{ url_for('manage_book') }}">Manage Books</a></div>
+        <div class="nav-item"><a  href="{{ url_for('issue_request') }}">Issue Requests</a></div>
+      {% endif %}
+    {% else %}
+    <div class="nav-item"><a  href="{{ url_for('login') }}">Login</a></div>
+      <div class="nav-item"><a  href="{{ url_for('register') }}">Register</a></div>
+    {% endif %}
+    <!--<a  href="#">Book Registeration</a>-->
+    
+    </div>
+    <div class="temp-body">
+      
+      <div class="bod-card">
+        {% for book in search %}
+          <div class="card">
+            <div class="card-image" >
+              <style>
+                :root {
+                    --background-url: url("{{url_for('static', filename='book_pics/' + book.img_file)}}");
+                    
+                }
+            </style>
+            <!-- <img src="{{url_for('static', filename='book_pics/' + book.img_file)}}"> -->
+              </div>
+                <div class="card-text">
+                  
+                    <p>Publisher:<a  href="{{url_for('publisher',publisher_name=book.publisher)}}"> {{ book.publisher }}</a></p>
+                    <p><a href="{{url_for('author', author_name=book.writer)}}">{{ book.writer }}</a></p>
+                  
+                  <a href="{{url_for('book_page',book_id=book.id)}}">{{ book.title }} </a>
+                  
+                    <p>{{ book.summary }}</p>
+                  
+                </div>
+                <div class="card-stats">
+                  <div class="stat">
+                    <div class="value">{{ book.rating}}</div>
+                    <div class="type">Stars</div>
+                </div>
+                <div class="stat">
+                  <div class="value">{{ book.availability }}</div>
+                  {% if book.availability >0 %}
+                  <div class="type">Available</div>
+                  {% else %}
+                  <div class="type">Out of Stocks</div>
+                  {% endif %}
+              </div>
+              </div>
+              </div>     
+        
+    {% endfor %}
+    
+    {% for book in books %}
+          <div class="card">
+            <div class="card-image" >
+              <style>
+                :root {
+                    --background-url: url("{{url_for('static', filename='book_pics/' + book.img_file)}}");
+                    
+                }
+            </style>
+            <!-- <img src="{{url_for('static', filename='book_pics/' + book.img_file)}}"> -->
+              </div>
+                <div class="card-text">
+                  
+                    <p>Publisher:<a  href="{{url_for('publisher',publisher_name=book.publisher)}}"> {{ book.publisher }}</a></p>
+                    <p><a href="{{url_for('author', author_name=book.writer)}}">{{ book.writer }}</a></p>
+                  
+                  <a href="{{url_for('book_page',book_id=book.id)}}">{{ book.title }} </a>
+                  
+                    <p>{{ book.summary }}</p>
+                  
+                </div>
+                <div class="card-stats">
+                  <div class="stat">
+                    <div class="value">{{ book.rating}}</div>
+                    <div class="type">Stars</div>
+                </div>
+                <div class="stat">
+                  <div class="value">{{ book.availability }}</div>
+                  {% if book.availability >0 %}
+                  <div class="type">Available</div>
+                  {% else %}
+                  <div class="type">Out of Stocks</div>
+                  {% endif %}
+              </div>
+              </div>
+              </div>     
+        
+    {% endfor %}
+  </div>
+  <div class="arivals">
+     <h1>New Arrivals</h1>
+    {% for book in new %}
+   
+    <div class="card">
+      <div class="card-image" >
+        <style>
+          :root {
+              --background-url: url("{{url_for('static', filename='book_pics/' + book.img_file)}}");
+              
+          }
+      </style>
+      <!-- <img src="{{url_for('static', filename='book_pics/' + book.img_file)}}"> -->
+        </div>
+          <div class="card-text">
+            <span>
+              <!--<p>Publisher:<a  href="{{url_for('publisher',publisher_name=book.publisher)}}"> {{ book.publisher }}</a></p>-->
+              <p><a href="{{url_for('author', author_name=book.writer)}}">{{ book.writer }}</a></p>
+              <p>{{book.genre}}</p>
+            
+              <p><a href="{{url_for('book_page',book_id=book.id)}}">{{ book.title }} </p>
+            </span>
+            <a></a>
+          </div>
+          <div class="card-stats">
+            <div class="stat">
+              <div class="value">{{ book.availability}}</div>
+          </div>
+          <div class="stat">
+            {% if book.availability >0 %}
+            <div class="type">Available</div>
+            {% else %}
+            <div class="type">Out of Stocks</div>
+            {% endif %}
+        </div>
+        </div>
+        </div> 
+        {% endfor %}
+       </div>
+</div>
+<footer>
+  <p>© Prahas Ranjan 2021<br>
+  </p>
+</footer>
+</body>
+</html>
