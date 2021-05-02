@@ -29,8 +29,9 @@ class RegistrationForm(FlaskForm):
 
 class SelectionForm(FlaskForm):
     category = SelectField('Category',
-                        choices=['Genre', 'Author','Rating', 'Publisher','Book Name'  ])
-    input_ = StringField('Category')
+                        choices=['Genre', 'Author', 'Publisher','Book Name'  ])
+    input_ = StringField(None)
+    submit = SubmitField('Search')
     #password = PasswordField('Password', validators=[DataRequired()])
     
 

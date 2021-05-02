@@ -4,8 +4,9 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main2.css') }}">
-
+  <script src="https://kit.fontaewsome.com/a076d05399.js"></script>
   {% if title %}
       <title>Library101 - {{ title }}</title>
   {% else %}
@@ -13,152 +14,204 @@
   {% endif %}
 </head>
 <body>
-  <div class="header">
-    <!--<form method="POST">
-      {{ form.category }}
-      {{form.input_}}
-      <input type="text" placeholder="Search.." method="POST">{{ form.input }}</input>
-      <input type="submit">
-    
-      </form>-->
-    {% if current_user.is_authenticated %}
-    <div class="nav-item"><a  href="{{ url_for('logout') }}">Logout</a></div>
-    <div class="nav-item"><a  href="{{ url_for('account') }}">Account</a></div>
-      {% if current_user.token  %}
-      <div class="nav-item"><a  href="{{ url_for('manage_book') }}">Manage Books</a></div>
-        <div class="nav-item"><a  href="{{ url_for('issue_request') }}">Issue Requests</a></div>
-      {% endif %}
-    {% else %}
-    <div class="nav-item"><a  href="{{ url_for('login') }}">Login</a></div>
-      <div class="nav-item"><a  href="{{ url_for('register') }}">Register</a></div>
-    {% endif %}
-    <!--<a  href="#">Book Registeration</a>-->
-    
-    </div>
-    <div class="temp-body">
-      
-      <div class="bod-card">
-        {% for book in search %}
-          <div class="card">
-            <div class="card-image" >
-              <style>
-                :root {
-                    --background-url: url("{{url_for('static', filename='book_pics/' + book.img_file)}}");
-                    
-                }
-            </style>
-            <!-- <img src="{{url_for('static', filename='book_pics/' + book.img_file)}}"> -->
+  <header class="site-header">
+    <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+      <div class="container">
+        <a class="navbar-brand mr-4" href="/">Library101</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarToggle">
+          <div class="navbar-nav mr-auto">
+            <a class="nav-item nav-link" href="{{ url_for('home') }}">Home</a>
+            <a class="nav-item nav-link" href="{{ url_for('about') }}">About</a>
+          </div>
+          <form method="POST" >
+            {{ form.hidden_tag() }}
+            <div class="user">
+              <div class="form-group">{{form.category(class="form-control form-control-lg")}}</div>
+              <div class="form-group" >
+              {% if form.input_.errors %}
+                {{ form.input_(class="form-control form-control-lg is-invalid") }}
+                  <div class="invalid-feedback">
+                    {% for error in form.input_.errors %}
+                      <span>{{ error }}</span>
+                    {% endfor %}
+                  </div>
+              {% else %}
+                {{ form.input_(class="form-control form-control-lg") }}
+              {% endif %}
               </div>
-                <div class="card-text">
-                  
-                    <p>Publisher:<a  href="{{url_for('publisher',publisher_name=book.publisher)}}"> {{ book.publisher }}</a></p>
-                    <p><a href="{{url_for('author', author_name=book.writer)}}">{{ book.writer }}</a></p>
-                  
-                  <a href="{{url_for('book_page',book_id=book.id)}}">{{ book.title }} </a>
-                  
-                    <p>{{ book.summary }}</p>
-                  
-                </div>
-                <div class="card-stats">
-                  <div class="stat">
-                    <div class="value">{{ book.rating}}</div>
-                    <div class="type">Stars</div>
-                </div>
-                <div class="stat">
-                  <div class="value">{{ book.availability }}</div>
-                  {% if book.availability >0 %}
-                  <div class="type">Available</div>
-                  {% else %}
-                  <div class="type">Out of Stocks</div>
-                  {% endif %}
+              <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info") }}
               </div>
-              </div>
-              </div>     
-        
-    {% endfor %}
-    
-    {% for book in books %}
-          <div class="card">
-            <div class="card-image" >
-              <style>
-                :root {
-                    --background-url: url("{{url_for('static', filename='book_pics/' + book.img_file)}}");
-                    
-                }
-            </style>
-            <!-- <img src="{{url_for('static', filename='book_pics/' + book.img_file)}}"> -->
-              </div>
-                <div class="card-text">
-                  
-                    <p>Publisher:<a  href="{{url_for('publisher',publisher_name=book.publisher)}}"> {{ book.publisher }}</a></p>
-                    <p><a href="{{url_for('author', author_name=book.writer)}}">{{ book.writer }}</a></p>
-                  
-                  <a href="{{url_for('book_page',book_id=book.id)}}">{{ book.title }} </a>
-                  
-                    <p>{{ book.summary }}</p>
-                  
-                </div>
-                <div class="card-stats">
-                  <div class="stat">
-                    <div class="value">{{ book.rating}}</div>
-                    <div class="type">Stars</div>
-                </div>
-                <div class="stat">
-                  <div class="value">{{ book.availability }}</div>
-                  {% if book.availability >0 %}
-                  <div class="type">Available</div>
-                  {% else %}
-                  <div class="type">Out of Stocks</div>
-                  {% endif %}
-              </div>
-              </div>
-              </div>     
-        
-    {% endfor %}
-  </div>
-  <div class="arivals">
-     <h1>New Arrivals</h1>
-    {% for book in new %}
-   
-    <div class="card">
-      <div class="card-image" >
-        <style>
-          :root {
-              --background-url: url("{{url_for('static', filename='book_pics/' + book.img_file)}}");
-              
-          }
-      </style>
-      <!-- <img src="{{url_for('static', filename='book_pics/' + book.img_file)}}"> -->
+            </div>
+          </form>
+          <!-- Navbar Right Side -->
+          <div class="navbar-nav">
+            {% if current_user.is_authenticated %}
+              <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
+              <a class="nav-item nav-link" href="{{ url_for('account') }}">Account</a>
+              {% if current_user.token  %}
+                <a class="nav-item nav-link" href="{{ url_for('manage_book') }}">Manage Books</a>
+                <a class="nav-item nav-link" href="{{ url_for('issue_request') }}">Issue Requests</a>
+              {% endif %}
+            {% else %}
+              <a class="nav-item nav-link" href="{{ url_for('login') }}">Login</a>
+              <a class="nav-item nav-link" href="{{ url_for('register') }}">Register</a>
+            {% endif %}
+            <!--<a class="nav-item nav-link" href="#">Book Registeration</a>-->
+          </div>
+            
         </div>
+      </div>
+    </nav>
+  </header>
+    
+  <main role="main" class="container">
+    <div class="row">
+      <div class="col-md-8">
+        <div class="message">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">
+              {{ message }}
+            </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+        </div>
+      </div>
+    </div>
+  </main>
+  <div class="temp-body">
+    
+   
+    <div class="arivals">
+      <h1>New Arrivals</h1>
+      {% for book in new %}
+        <div class="card">
+          <div class="card-image" >
+           <!--<style>
+             :root {
+                 --background-url: url("{{url_for('static', filename='book_pics/' + book.img_file)}}");
+                 
+             }
+             
+            </style>-->
+            <img src="{{url_for('static', filename='book_pics/' + book.img_file)}}">
+          </div>
           <div class="card-text">
             <span>
               <!--<p>Publisher:<a  href="{{url_for('publisher',publisher_name=book.publisher)}}"> {{ book.publisher }}</a></p>-->
               <p><a href="{{url_for('author', author_name=book.writer)}}">{{ book.writer }}</a></p>
               <p>{{book.genre}}</p>
-            
               <p><a href="{{url_for('book_page',book_id=book.id)}}">{{ book.title }} </p>
             </span>
-            <a></a>
+              <a></a>
           </div>
           <div class="card-stats">
             <div class="stat">
               <div class="value">{{ book.availability}}</div>
+            </div>
+            <div class="stat">
+              {% if book.availability >0 %}
+                <div class="type">Available</div>
+              {% else %}
+                <div class="type">Out of Stocks</div>
+              {% endif %}
+           </div>
           </div>
-          <div class="stat">
-            {% if book.availability >0 %}
-            <div class="type">Available</div>
-            {% else %}
-            <div class="type">Out of Stocks</div>
-            {% endif %}
-        </div>
-        </div>
         </div> 
+      {% endfor %}
+    </div>
+ 
+      {% if search!=[] %}
+      <div class="search-card">
+        {% for book in search %}
+          <div class="card">
+            <div class="card-image" >
+              <!--<style>
+                :root {
+                    --background-url: url("{{url_for('static', filename='book_pics/' + book.img_file)}}");
+                    
+                }
+              </style>-->
+              <img src="{{url_for('static', filename='book_pics/' + book.img_file)}}"> 
+            </div>
+            <div class="card-text">
+              <p>Publisher:<a  href="{{url_for('publisher',publisher_name=book.publisher)}}"> {{ book.publisher }}</a></p>
+              <p><a href="{{url_for('author', author_name=book.writer)}}">{{ book.writer }}</a></p>
+              <a href="{{url_for('book_page',book_id=book.id)}}">{{ book.title }} </a>
+              <p>{{ book.summary }}</p>
+            </div>
+            <div class="card-stats">
+              <div class="stat">
+                <div class="value">{{ book.rating}}</div>
+                <div class="type">Stars</div>
+              </div>
+              <div class="stat">
+                <div class="value">{{ book.availability }}</div>
+                  {% if book.availability >0 %}
+                  <div class="type">Available</div>
+                  {% else %}
+                  <div class="type">Out of Stocks</div>
+                  {% endif %}
+              </div>
+            </div>
+          </div>
         {% endfor %}
-       </div>
-</div>
-<footer>
+      </div>
+      {% endif %}
+     
+    <div id="col-6 col-s-9">
+    <div class="bod-card">
+      {% for book in books %}
+        <div class="card">
+          <div class="card-image" >
+            <!--<style>
+                :root {
+                    --background-url: url("{{url_for('static', filename='book_pics/' + book.img_file)}}");
+                    
+                }
+          
+            </style>-->
+            <img src="{{url_for('static', filename='book_pics/' + book.img_file)}}"> 
+          </div>
+          <div class="card-text">        
+            <p>Publisher:<a  href="{{url_for('publisher',publisher_name=book.publisher)}}"> {{ book.publisher }}</a></p>
+            <p><a href="{{url_for('author', author_name=book.writer)}}">{{ book.writer }}</a></p>
+            <a href="{{url_for('book_page',book_id=book.id)}}">{{ book.title }} </a>
+            <p>{{ book.summary }}</p>
+          </div>
+          <div class="card-stats">
+            <div class="stat">
+              <div class="value">{{ book.rating}}</div>
+                <div class="type">Stars</div>
+            </div>
+            <div class="stat">
+              <div class="value">{{ book.availability }}</div>
+                {% if book.availability >0 %}
+                  <div class="type">Available</div>
+                {% else %}
+                  <div class="type">Out of Stocks</div>
+                {% endif %}
+            </div>
+          </div>
+        </div>     
+      {% endfor %}
+    </div>
+    </div>
+  </div>
+
+  <footer>
   <p>© Prahas Ranjan 2021<br>
   </p>
 </footer>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  
 </body>
 </html>

@@ -11,12 +11,21 @@ from flask_login import login_user, current_user, logout_user, login_required
 @app.route("/home", methods=['GET', 'POST'])
 def home():
     books=Book.query.all()
-    form=SelectionForm(request.form)
+    form=SelectionForm()
     new=Book.query.order_by(Book.id.desc()).limit(5)
     search=[]
-    #if request.method =='POST':
-    #    print(search)
-    #    if (form.data['category'] == 'author'):
+    if request.method =='POST':
+        print(form.category.data,form.input_.data)
+        if (form.category.data=='Author'):
+            search=Book.query.filter_by(writer=form.input_.data).order_by(Book.rating.desc()).all()
+        elif(form.category.data=='Publisher'):
+            search=Book.query.filter_by(publisher=form.input_.data).order_by(Book.rating.desc()).all()
+        elif(form.category.data=='Genre'):
+            search=Book.query.filter_by(genre=form.input_.data).order_by(Book.rating.desc()).all()
+        elif(form.category.data=='Book Name'):
+            search=Book.query.filter_by(title=form.input_.data).order_by(Book.rating.desc()).all()
+
+        return render_template('all_books.html', books=books, new=new, form=form, search=search)
     #        print("...",search)
     #        search=Book.query.filter_by(writer=form.input_.data).order_by(Book.rating.desc()).all()
     return render_template('all_books.html', books=books, new=new, form=form, search=search)
@@ -43,30 +52,27 @@ def book_page(book_id):
     same_genre=Book.query.filter_by(genre=book.genre).order_by(Book.rating.desc()).limit(5)
     image_file = url_for('static', filename='book_pics/' + book.img_file)
     form= PostForm()
-    form1= SelectionForm()
     form2=Book_regForm()
     already_post=False
     print(already_post)
     for i in posts:
-      print( i.username,book_id, already_post)
-      if(current_user.is_authenticated):
-        if(current_user.username == i.username):
-            print("post found", i.username, book_id, already_post)
-            already_post=True
-            break
-        else:
-            print("not found",book_id,i.username )
-            already_post=False
-      image_file = url_for('static', filename='book_pics/' + book.img_file)
-      if form.validate_on_submit():
+        print( i.username,book_id, already_post)
+        if(current_user.is_authenticated):
+            if(current_user.username == i.username):
+                print("post found", i.username, book_id, already_post)
+                already_post=True
+                break
+            else:
+                print("not found",book_id,i.username )
+                already_post=False
+    image_file = url_for('static', filename='book_pics/' + book.img_file)
+    if form.validate_on_submit():
         post1=Post(username=current_user.username,rating=form.rating.data, description=form.description.data, content=form.content.data, book_id=book_id)
         book.rating=int((book.rating+form.rating.data)//(len(posts)+1))
         db.session.add(post1)
         db.session.commit()
         return redirect(url_for('book_page', book_id=book_id))
- 
-    
-      return render_template('book.html', already_post=already_post,title=book.title, book=book, form=form, posts=posts, image_file=image_file, form1=form1, form2=form2, same_genre=same_genre, same_author=same_author)
+    return render_template('book.html', already_post=already_post,title=book.title, book=book,form=form, posts=posts, image_file=image_file, form2=form2, same_genre=same_genre, same_author=same_author)
 
 
 
@@ -189,8 +195,22 @@ def account():
 @app.route("/issue_requests")
 @login_required
 def issue_request():  
-    reqs=Irequest.query.all()
-    return render_template('requests.html', title='Book Issue Requests', reqs=reqs)
+    if(current_user.token): 
+        reqs=Irequest.query.all()
+        return render_template('requests.html', title='Book Issue Requests', reqs=reqs)
+    else:
+        flash('Method Not Allowed', 'danger')
+        return redirect(url_for('home'))
+
+@app.route("/issuers")
+@login_required
+def issuers(): 
+    if(current_user.token): 
+        reqs=Irequest.query.all()
+        return render_template('issuers.html', title='User Data', reqs=reqs)
+    else:
+        flash('Method Not Allowed', 'danger')
+        return redirect(url_for('home'))
 
 @app.route("/manage_book",methods=['GET', 'POST'])
 @login_required

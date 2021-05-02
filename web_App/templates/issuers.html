@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+{% block content %}
+  <h1>Book/User Data </h1>
+
+  <hr>
+  <table class="table table-striped">
+    <tr>
+      <th>Username</th>
+      <th>User Id</th>
+      <th>Duaration</th>
+      <th>Book Name</th>
+      <th>Book Id</th>
+      <th>Book availability Status</th>
+      <th>Conf. Status</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+    {% for req in reqs %}
+   
+      <tr>
+        <td>{{req.user_name}}</td>
+        <td>{{req.issuer.id}}</td>
+        <td>{{req.duration}}</td>
+        <td>{{req.book_name}}</td>
+        <td>{{req.book_entry_id}}</td>
+        <td>{{req.issued.availability}}</td>
+        <td>{{req. confirmation_status}}</td>
+        <td><a href="{{ url_for('edit_book', book_id=req.book_entry_id)}}" class="btn btn-default pull-right">Edit</a></td>
+        {% if req.confirmation_status == 'wait' %}
+        <td>
+            <a href="{{ url_for('issue_confirmation', request_id=req.id)}}" class="btn btn-default pull-right">
+            <button class="btn btn-success">Confirm</button></a></td>
+        <td>
+            <a href="{{ url_for('delete_confirmation', request_id=req.id)}}" class="btn btn-default pull-right">
+            <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Delete</button></a>
+        {% endif %}
+        </td>
+    </tr>
+  
+    {% endfor %}
+  </table>
+{% endblock %}

@@ -7,7 +7,19 @@ body {
   h1, h2, h3, h4, h5, h6 {
     color: #e7bdbd;
   }
-  
+  #col-md-4{
+    width:70vw;
+    align-items: center;
+    display: flex;
+    
+  }
+  #col-md-4 #list-group{
+    display:grid;
+    align-items: center;
+    grid-template-columns: 1fr 1fr 1fr;
+
+  }
+
   .bg-steel {
     background-color: #b80b36;
   }
@@ -30,6 +42,8 @@ body {
     border: 1px solid #dddddd;
     border-radius: 3px;
     margin-bottom: 20px;
+    margin-right: 10px;
+    margin-left:10px;
   }
   
   .article-title {
@@ -37,7 +51,7 @@ body {
   }
   
   a.article-title:hover {
-    color: #e6562a;
+    color: #e4d5d0;
     text-decoration: none;
   }
   
