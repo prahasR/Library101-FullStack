@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, flash, redirect, request
+from flask import Flask, render_template, url_for, flash, redirect, request, current_app
 import os
 import secrets
 from PIL import Image
@@ -6,6 +6,7 @@ from web_App import app, db, bcrypt, login_manager
 from web_App.forms import RegistrationForm, SelectionForm, LoginForm, Book_regForm, LibLoginForm, UpdateAccountForm,ManageBookForm, PostForm
 from web_App.models import User , Post, Librarian, Book, Irequest
 from flask_login import login_user, current_user, logout_user, login_required
+from werkzeug.utils import secure_filename
 
 @app.route("/")
 @app.route("/home", methods=['GET', 'POST'])
@@ -34,13 +35,14 @@ def home():
 
 def save_picture(form_picture, folder):
     random_hex = secrets.token_hex(8)
-    _, f_ext = os.path.splitext(form_picture.filename)
-    picture_fn = random_hex + f_ext
-    picture_path = os.path.join(app.root_path, 'static/'+folder, picture_fn)
-
+    # _, f_ext = os.path.splitext(form_picture.filename)
+    # picture_fn = random_hex + f_ext
+    picture_fn = secure_filename(form_picture.filename)
+    picture_path = os.path.join(app.instance_path, 'static/'+folder, picture_fn)
+    print("---PATH::----", picture_path)
     output_size = (125, 125)
     i = Image.open(form_picture)
-    i.thumbnail(output_size)
+    #i.thumbnail(output_size)
     i.save(picture_path)
 
     return picture_fn
@@ -261,6 +263,7 @@ def add_book():
     if(current_user.token):
         form = ManageBookForm()
         folder='book_pics'
+        # picture_file = save_picture(form.picture.data, folder)
         if form.validate_on_submit():
             print("xxxxxxx", form.picture.data)
             if form.picture.data:
