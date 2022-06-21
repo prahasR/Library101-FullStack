@@ -35,10 +35,10 @@ def home():
 
 def save_picture(form_picture, folder):
     random_hex = secrets.token_hex(8)
-    # _, f_ext = os.path.splitext(form_picture.filename)
-    # picture_fn = random_hex + f_ext
-    picture_fn = secure_filename(form_picture.filename)
-    picture_path = os.path.join(app.instance_path, 'static/'+folder, picture_fn)
+    _, f_ext = os.path.splitext(form_picture.filename)
+    picture_fn = random_hex + f_ext
+    #picture_fn = secure_filename(form_picture.filename)
+    picture_path = os.path.join(app.root_path, 'static/'+folder, picture_fn)
     print("---PATH::----", picture_path)
     output_size = (125, 125)
     i = Image.open(form_picture)
