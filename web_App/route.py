@@ -11,8 +11,10 @@ from flask_login import login_user, current_user, logout_user, login_required
 @app.route("/home", methods=['GET', 'POST'])
 def home():
     books=Book.query.all()
+    print(books)
     form=SelectionForm()
     new=Book.query.order_by(Book.id.desc()).limit(5)
+    print(form)
     search=[]
     if request.method =='POST':
         print(form.category.data,form.input_.data)
@@ -83,6 +85,7 @@ def about():
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
+    print(Librarian.query.all())
     if current_user.is_authenticated:
         return redirect(url_for('home'))
     form = RegistrationForm()
@@ -144,12 +147,14 @@ def book_reg(book_id):
 
 @app.route("/librarian_login", methods=['GET', 'POST'])
 def lib_login():
+    print(User.query.all())
     if current_user.is_authenticated:
         print(current_user.username)
         return redirect(url_for('home'))
     form = LibLoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(token=form.token.data).first()
+        print("uuuussseeerrr::::", user)
         if user and form.password.data==user.password: #and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, form.remember.data)
             #login_manager.login_view='lib_login'
