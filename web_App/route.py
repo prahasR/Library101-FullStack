@@ -8,24 +8,26 @@ from web_App.models import User , Post, Librarian, Book, Irequest
 from flask_login import login_user, current_user, logout_user, login_required
 from werkzeug.utils import secure_filename
 
-@app.route("/")
+@app.route("/", methods=['GET', 'POST'])
 @app.route("/home", methods=['GET', 'POST'])
 def home():
     books=Book.query.all()
     print(books)
     form=SelectionForm()
     new=Book.query.order_by(Book.id.desc()).limit(5)
-    print(form)
+    # print(form)
     search=[]
     if request.method =='POST':
-        print(form.category.data,form.input_.data)
-        if (form.category.data=='Author'):
+        print("-------------")
+        print(form.category.data)
+        print(form.input_.data)
+        if (form.category.data=='author'):
             search=Book.query.filter_by(writer=form.input_.data).order_by(Book.rating.desc()).all()
-        elif(form.category.data=='Publisher'):
+        elif(form.category.data=='pub'):
             search=Book.query.filter_by(publisher=form.input_.data).order_by(Book.rating.desc()).all()
-        elif(form.category.data=='Genre'):
+        elif(form.category.data=='genre'):
             search=Book.query.filter_by(genre=form.input_.data).order_by(Book.rating.desc()).all()
-        elif(form.category.data=='Book Name'):
+        elif(form.category.data=='bookname'):
             search=Book.query.filter_by(title=form.input_.data).order_by(Book.rating.desc()).all()
 
         return render_template('all_books.html', books=books, new=new, form=form, search=search)

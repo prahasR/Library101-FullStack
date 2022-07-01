@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField,IntegerField,SelectField, PasswordField, SubmitField, BooleanField, TextAreaField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from flask_login import current_user
-from flask_wtf.file import FileField, FileAllowed
+from wtforms import FileField
 from web_App.models import User
 
 
@@ -29,7 +29,7 @@ class RegistrationForm(FlaskForm):
 
 class SelectionForm(FlaskForm):
     category = SelectField('Category',
-                        choices=['Genre', 'Author', 'Publisher','Book Name'  ])
+                        choices=[('genre', 'Genre'), ('author', 'Author'), ('pub', 'Publisher'),('bookname','Book Name')  ])
     input_ = StringField(None)
     submit = SubmitField('Search')
     #password = PasswordField('Password', validators=[DataRequired()])
@@ -67,7 +67,7 @@ class UpdateAccountForm(FlaskForm):
                            validators=[DataRequired(), Length(min=2, max=20)])
     email = StringField('Email',
                         validators=[DataRequired(), Email()])
-    picture = FileField('Update Profile Picture', validators=[FileAllowed(['jpg', 'png'])])
+    picture = FileField('Update Profile Picture')#, validators=[FileAllowed(['jpg', 'png'])])
     submit = SubmitField('Update')
 
     def validate_username(self, username):
@@ -89,7 +89,7 @@ class ManageBookForm(FlaskForm):
     summary = TextAreaField('Summary')
     genre=StringField('Genre of Book')
     availability = IntegerField('Status')
-    picture = FileField('Update Picture', validators=[FileAllowed(['jpg','jpeg', 'png'])])
+    picture = FileField('Update Picture')
     submit = SubmitField('Update')
 
     #def validate_username(self, username):
